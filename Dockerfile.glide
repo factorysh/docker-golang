@@ -9,6 +9,10 @@ ENV GLIDE_VERSION=0.12.3
 
 RUN cd /tmp && curl -qL https://github.com/Masterminds/glide/releases/download/v${GLIDE_VERSION}/glide-v${GLIDE_VERSION}-linux-amd64.tar.gz | tar -xz && mv linux-amd64/glide /usr/local/bin/glide && rm -rf linux-amd64
 
+RUN useradd --home-dir /go --create-home --shell /bin/bash go
+
 WORKDIR /go
+USER go
+
 ENV GOPATH=/go
 CMD glide install
