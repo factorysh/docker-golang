@@ -1,3 +1,4 @@
+all: glide
 
 glide:
 	docker build -t bearstech/golang-glide:stretch -f Dockerfile.glide .
