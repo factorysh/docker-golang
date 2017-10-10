@@ -1,5 +1,8 @@
 FROM bearstech/debian-dev:stretch
 
+RUN apt-get update && \
+    apt-get install -y openssh-client
+
 ENV GOLANG_VERSION=1.9.1
 RUN cd /opt && curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz
 
