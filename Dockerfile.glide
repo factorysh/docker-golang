@@ -14,6 +14,8 @@ RUN cd /tmp && curl -qL https://github.com/Masterminds/glide/releases/download/v
 
 RUN useradd --home-dir /go --create-home --shell /bin/bash go
 
+RUN chmod 777 /go 
+
 WORKDIR /go
 USER go
 
