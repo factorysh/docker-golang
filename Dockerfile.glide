@@ -22,4 +22,5 @@ WORKDIR /go
 USER go
 
 ENV GOPATH=/go
+ENV GORROT=/opt/go
 CMD glide install
