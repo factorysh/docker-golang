@@ -1,4 +1,4 @@
-all: golang glide dep
+all: golang glide dep node
 
 golang:
 	docker build -t bearstech/golang-dev:stretch -f Dockerfile .
@@ -14,6 +14,9 @@ dep:
 	docker build -t bearstech/golang-dep:stretch -f Dockerfile.dep .
 	docker tag bearstech/golang-dep:stretch bearstech/golang-dep:9
 	docker tag bearstech/golang-dep:stretch bearstech/golang-dep:latest
+
+node:
+	docker build -t bearstech/golang-node:latest -f Dockerfile.node .
 
 push:
 	docker push bearstech/golang-dev:stretch
