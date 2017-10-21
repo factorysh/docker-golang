@@ -28,3 +28,4 @@ push:
 	docker push bearstech/golang-dep:stretch
 	docker push bearstech/golang-dep:9
 	docker push bearstech/golang-dep:latest
+	docker push bearstech/golang-node:latest
