@@ -1,0 +1,33 @@
+FROM bearstech/debian-dev:stretch
+
+RUN apt-get update && \
+    apt-get install -y \
+        protobuf-compiler libprotobuf-dev libprotoc-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# protobuild likes it in /usr/local
+RUN ln -s /usr/include/google /usr/local/include/google
+
+ENV GOLANG_VERSION=1.9.1
+RUN cd /opt && curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz
+
+ENV PATH=/opt/go/bin:/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+RUN useradd --home-dir /go --create-home --shell /bin/bash go
+
+RUN chmod 777 /go
+
+WORKDIR /go
+USER go
+
+ENV GOPATH=/go
+ENV GOROOT=/opt/go
+
+RUN \
+    go get -u google.golang.org/grpc && \
+    go get -u github.com/golang/protobuf/protoc-gen-go && \
+    go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway && \
+    go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger && \
+    go get -u github.com/stevvooe/protobuild
+
+CMD protoc --version
