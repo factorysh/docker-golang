@@ -1,6 +1,6 @@
 FROM bearstech/debian-dev:stretch
 
-ENV GOLANG_VERSION=1.9.2
+ENV GOLANG_VERSION=1.10
 RUN cd /opt && curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz
 
 ENV PATH=/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
