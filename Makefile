@@ -1,4 +1,9 @@
-all: golang glide dep node
+all: pull build
+
+pull:
+	docker pull bearstech/debian-dev:stretch
+
+build: golang glide dep node
 
 golang:
 	docker build -t bearstech/golang-dev:stretch -f Dockerfile .
@@ -34,3 +39,6 @@ push:
 	docker push bearstech/golang-dep:9
 	docker push bearstech/golang-dep:latest
 	docker push bearstech/golang-node:latest
+
+tests:
+	echo "No tests provided for docker-golang..."
