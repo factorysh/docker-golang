@@ -1,9 +1,11 @@
+GOSS_VERSION := 0.3.5
+
 all: pull build
 
 pull:
 	docker pull bearstech/debian-dev:stretch
 
-build: golang glide dep node
+build: golang glide protobuild dep node
 
 golang:
 	docker build -t bearstech/golang-dev:stretch -f Dockerfile .
@@ -40,5 +42,49 @@ push:
 	docker push bearstech/golang-dep:latest
 	docker push bearstech/golang-node:latest
 
-tests:
-	echo "No tests provided for docker-golang..."
+bin/goss:
+	mkdir -p bin
+	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss
+
+test-golang-hello: bin/goss
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/go \
+		-w /go \
+		bearstech/golang-dev:9 \
+		goss -g go-dev.yaml validate --max-concurrent 4 --format documentation
+
+test-glide-hello: bin/goss
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/go \
+		-w /go \
+		bearstech/golang-glide:9 \
+		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+
+test-dep-hello: bin/goss
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/go \
+		-w /go \
+		bearstech/golang-dep:9 \
+		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+
+test-protobuild-hello: bin/goss
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/go \
+		-w /go \
+		bearstech/golang-protobuild:9 \
+		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+
+test-node-hello: bin/goss
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/go \
+		-w /go \
+		bearstech/golang-node:latest \
+		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+
+tests: test-golang-hello test-glide-hello test-dep-hello test-protobuild-hello test-node-hello

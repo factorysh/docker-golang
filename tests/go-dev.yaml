@@ -1,0 +1,5 @@
+---
+
+gossfile:
+    go_hello.yaml: {}
+    package_hello.yaml: {}
