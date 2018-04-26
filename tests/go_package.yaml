@@ -1,7 +1,7 @@
 ---
 
 command:
-    "go install stringutil && go run src/hello/main.go":
+    "go run src/hello/main.go":
         exit-status: 0
         timeout: 120000
         stdout:
