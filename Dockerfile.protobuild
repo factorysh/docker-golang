@@ -29,5 +29,3 @@ RUN \
     go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway && \
     go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger && \
     go get -u github.com/stevvooe/protobuild
-
-CMD protoc --version

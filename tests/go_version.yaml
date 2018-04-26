@@ -1,0 +1,8 @@
+---
+
+command:
+    "go version":
+        exit-status: 0
+        timeout: 120000
+        stdout:
+            - /go version go{{ .Vars.go_version }} linux\/amd64/

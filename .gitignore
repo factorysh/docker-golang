@@ -1,3 +1,4 @@
 bin/
 tests/.cache/
 tests/pkg/
+.bash_history

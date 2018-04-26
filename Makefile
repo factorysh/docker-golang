@@ -53,7 +53,7 @@ test-golang-hello: bin/goss
 		-v `pwd`/tests:/go \
 		-w /go \
 		bearstech/golang-dev:9 \
-		goss -g go-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation
 
 test-glide-hello: bin/goss
 	@docker run --rm -t \
@@ -61,7 +61,7 @@ test-glide-hello: bin/goss
 		-v `pwd`/tests:/go \
 		-w /go \
 		bearstech/golang-glide:9 \
-		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g /go/go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation
 
 test-dep-hello: bin/goss
 	@docker run --rm -t \
@@ -69,7 +69,7 @@ test-dep-hello: bin/goss
 		-v `pwd`/tests:/go \
 		-w /go \
 		bearstech/golang-dep:9 \
-		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g /go/go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation
 
 test-protobuild-hello: bin/goss
 	@docker run --rm -t \
@@ -77,7 +77,7 @@ test-protobuild-hello: bin/goss
 		-v `pwd`/tests:/go \
 		-w /go \
 		bearstech/golang-protobuild:9 \
-		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g /go/go-dev.yaml --vars vars/go_protobuild_node.yaml validate --max-concurrent 4 --format documentation
 
 test-node-hello: bin/goss
 	@docker run --rm -t \
@@ -85,6 +85,6 @@ test-node-hello: bin/goss
 		-v `pwd`/tests:/go \
 		-w /go \
 		bearstech/golang-node:latest \
-		goss -g /go/go-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g /go/go-dev.yaml --vars vars/go_protobuild_node.yaml validate --max-concurrent 4 --format documentation
 
 tests: test-golang-hello test-glide-hello test-dep-hello test-protobuild-hello test-node-hello

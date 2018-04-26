@@ -1,5 +1,6 @@
 ---
 
 gossfile:
-    go_hello.yaml: {}
-    package_hello.yaml: {}
+    go_version.yaml: {}
+    go_standalone.yaml: {}
+    go_package.yaml: {}
