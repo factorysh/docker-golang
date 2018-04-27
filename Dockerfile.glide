@@ -10,8 +10,10 @@ RUN apt-get update && \
 ENV GLIDE_VERSION=0.12.3
 ENV GLIDE_HOME=/go/.glide
 
-RUN cd /tmp && curl -qL https://github.com/Masterminds/glide/releases/download/v${GLIDE_VERSION}/glide-v${GLIDE_VERSION}-linux-amd64.tar.gz | tar -xz
-RUN mv /tmp/linux-amd64/glide /usr/local/bin/glide
-RUN rm -rf /tmp/linux-amd64
+RUN cd /tmp && curl -qL https://github.com/Masterminds/glide/releases/download/v${GLIDE_VERSION}/glide-v${GLIDE_VERSION}-linux-amd64.tar.gz | tar -xz &&\
+		mv /tmp/linux-amd64/glide /usr/local/bin/glide &&\
+		rm -rf /tmp/linux-amd64
 
 USER go
+
+CMD glide install
