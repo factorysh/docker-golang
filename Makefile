@@ -55,6 +55,7 @@ test-deployed:
 	@test "${NAME_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@test "${CMD_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@test "${IMG_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
+	@docker stop ${NAME_CONTAINER} > /dev/null 2>&1 || docker rm ${NAME_CONTAINER} > /dev/null 2>&1 || true
 	@docker run -d -t --name ${NAME_CONTAINER} ${IMG_CONTAINER} > /dev/null
 	@docker cp tests/. ${NAME_CONTAINER}:/go
 	@docker cp bin/goss ${NAME_CONTAINER}:/usr/local/bin/goss
