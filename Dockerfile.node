@@ -1,21 +1,24 @@
 FROM bearstech/node-dev:lts
 
-RUN apt-get update && apt-get install -y \
-        git \
-        mercurial \
-    && rm -rf /var/lib/apt/lists/*
-
 ENV GOLANG_VERSION=1.9.1
-RUN cd /opt && curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz
-
 ENV PATH=/opt/go/bin:/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV GOPATH=/go
+ENV GOROOT=/opt/go
 
-RUN useradd --home-dir /go --create-home --shell /bin/bash go
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN set -eux \
+    &&  apt-get update \
+    &&  apt-get install -y --no-install-recommends \
+              git \
+              mercurial \
+    &&  apt-get clean \
+    &&  rm -rf /var/lib/apt/lists/* \
+    &&  curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz \
+    &&  mv go /opt/go \
+    &&  useradd --home-dir /go --create-home --shell /bin/bash go \
+    &&  chmod 755 /go
 
-RUN chmod 777 /go
+SHELL ["/bin/sh", "-c"]
 
 WORKDIR /go
 USER go
-
-ENV GOPATH=/go
-ENV GOROOT=/opt/go

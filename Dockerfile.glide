@@ -1,19 +1,23 @@
 FROM bearstech/golang-dev:stretch
 
-USER root
-
-RUN apt-get update && \
-    apt-get install -y \
-        openssh-client \
-    && rm -rf /var/lib/apt/lists/*
-
 ENV GLIDE_VERSION=0.12.3
 ENV GLIDE_HOME=/go/.glide
 
-RUN cd /tmp && curl -qL https://github.com/Masterminds/glide/releases/download/v${GLIDE_VERSION}/glide-v${GLIDE_VERSION}-linux-amd64.tar.gz | tar -xz &&\
-		mv /tmp/linux-amd64/glide /usr/local/bin/glide &&\
-		rm -rf /tmp/linux-amd64
+USER root
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN set -eux \
+    &&  apt-get update \
+    &&  apt-get install -y --no-install-recommends \
+            openssh-client \
+    &&  apt-get clean \
+    &&  rm -rf /var/lib/apt/lists/* \
+    &&  curl -qL https://github.com/Masterminds/glide/releases/download/v${GLIDE_VERSION}/glide-v${GLIDE_VERSION}-linux-amd64.tar.gz | tar -xz \
+		&&  mv linux-amd64/glide /usr/local/bin/glide \
+		&&  rm -rf /tmp/linux-amd64
+
+SHELL ["/bin/sh", "-c"]
 
 USER go
 
-CMD glide install
+CMD ["glide", "install"]

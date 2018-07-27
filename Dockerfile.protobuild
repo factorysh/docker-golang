@@ -1,32 +1,37 @@
 FROM bearstech/debian-dev:stretch
 
-RUN apt-get update && \
-    apt-get install -y \
-        protobuf-compiler libprotobuf-dev libprotoc-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# protobuild likes it in /usr/local
-RUN ln -s /usr/include/google /usr/local/include/google
-
 ENV GOLANG_VERSION=1.9.1
-RUN cd /opt && curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz
-
 ENV PATH=/opt/go/bin:/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV GOPATH=/go
+ENV GOROOT=/opt/go
 
-RUN useradd --home-dir /go --create-home --shell /bin/bash go
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN chmod 777 /go
+RUN set -eux \
+    &&  apt-get update \
+    &&  apt-get install -y --no-install-recommends \
+              protobuf-compiler \
+              libprotobuf-dev \
+              libprotoc-dev \
+    &&  apt-get clean \
+    &&  rm -rf /var/lib/apt/lists/* \
+    # protobuild likes it in /usr/local
+    &&  ln -s /usr/include/google /usr/local/include/google \
+    &&  curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz \
+    &&  mv go /opt/go \
+    &&  useradd --home-dir /go --create-home --shell /bin/bash go \
+    &&  chmod 755 /go
+
+SHELL ["/bin/sh", "-c"]
 
 WORKDIR /go
 USER go
 
-ENV GOPATH=/go
-ENV GOROOT=/opt/go
+RUN set -eux \
+    &&  go get -u google.golang.org/grpc \
+		&&  go get -u github.com/golang/protobuf/protoc-gen-go \
+		&&  go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
+		&&  go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger \
+		&&  go get -u github.com/stevvooe/protobuild
 
-RUN go get -u google.golang.org/grpc &&\
-		go get -u github.com/golang/protobuf/protoc-gen-go &&\
-		go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway &&\
-		go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger &&\
-		go get -u github.com/stevvooe/protobuild
-
-CMD protoc --version
+CMD ["protoc", "--version"]
