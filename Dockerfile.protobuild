@@ -24,8 +24,8 @@ RUN set -eux \
 
 SHELL ["/bin/sh", "-c"]
 
-WORKDIR /go
 USER go
+WORKDIR /go
 
 RUN set -eux \
     &&  go get -u google.golang.org/grpc \

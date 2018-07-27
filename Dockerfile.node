@@ -20,5 +20,9 @@ RUN set -eux \
 
 SHELL ["/bin/sh", "-c"]
 
-WORKDIR /go
 USER go
+WORKDIR /go
+
+# Use this image using :
+# - go build [YOUR_DIR]
+# - make ...

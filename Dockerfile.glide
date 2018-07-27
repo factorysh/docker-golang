@@ -19,5 +19,6 @@ RUN set -eux \
 SHELL ["/bin/sh", "-c"]
 
 USER go
+WORKDIR /go
 
 CMD ["glide", "install"]

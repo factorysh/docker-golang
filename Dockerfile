@@ -13,5 +13,10 @@ RUN set -eux \
     &&  chmod 755 /go
 
 SHELL ["/bin/sh", "-c"]
-WORKDIR /go
+
 USER go
+WORKDIR /go
+
+# Use this image using :
+# - go build [YOUR_DIR]
+# - make ...

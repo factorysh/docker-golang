@@ -15,5 +15,6 @@ RUN set -eux \
 		&&  chmod +x /usr/local/bin/dep
 
 USER go
+WORKDIR /go
 
 CMD ["dep", "ensure"]
