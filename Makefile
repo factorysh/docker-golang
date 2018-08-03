@@ -57,8 +57,9 @@ test-deployed:
 	@test "${IMG_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@(docker stop ${NAME_CONTAINER} > /dev/null 2>&1 && docker rm ${NAME_CONTAINER} > /dev/null 2>&1) || true
 	@docker run --rm -d -t --name ${NAME_CONTAINER} ${IMG_CONTAINER} /bin/bash > /dev/null
-	@docker cp tests/. ${NAME_CONTAINER}:/go
 	@docker cp bin/goss ${NAME_CONTAINER}:/usr/local/bin/goss
+	@docker cp tests/. ${NAME_CONTAINER}:/go
+	@docker exec -t -u root ${NAME_CONTAINER} chown -R go:go /go
 	@docker exec -t -w /go ${NAME_CONTAINER} ${CMD_CONTAINER}
 	@docker stop ${NAME_CONTAINER} > /dev/null
 
