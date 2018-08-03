@@ -1,8 +1,14 @@
 ---
 
 command:
-    "cd /go/src/pkg_errors && glide init --non-interactive && glide install && go install && cd /go/bin && ./pkg_errors":
+    ? |
+      cd /go/src/pkg_errors &&
+      glide init --non-interactive &&
+      glide install &&
+      go install &&
+      /go/bin/pkg_errors
+    :
         exit-status: 0
         timeout: 120000
         stdout:
-          - /\/go\/src\/pkg_errors\/main\.go\:9/
+            - /\/go\/src\/pkg_errors\/main\.go\:9/

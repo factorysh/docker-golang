@@ -1,8 +1,16 @@
 ---
 
 command:
-    "cd /go/src/pkg_errors && dep init && dep ensure -update && dep ensure && go install && cd /go/bin && ./pkg_errors":
+    ? |
+      cd /go/src/pkg_errors &&
+      dep init &&
+      dep ensure -update &&
+      dep ensure &&
+      go install &&
+      cd /go/bin &&
+      ./pkg_errors
+    :
         exit-status: 0
         timeout: 120000
         stdout:
-          - /\/go\/src\/pkg_errors\/main\.go\:9/
+            - /\/go\/src\/pkg_errors\/main\.go\:9/
