@@ -1,0 +1,6 @@
+---
+
+command:
+    "! test -f doc.pb.go && cd /go/src/protoc_test && eval $(protobuild protoc_test | head -n 1) && test -f doc.pb.go":
+        exit-status: 0
+        timeout: 120000

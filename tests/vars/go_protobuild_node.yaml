@@ -1,3 +1,4 @@
 ---
 
 go_version: "1.9.1"
+libprotoc_version: "3.0.0"

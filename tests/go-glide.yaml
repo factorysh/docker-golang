@@ -1,0 +1,6 @@
+---
+
+gossfile:
+    go-dev.yaml: {}
+    go_glide_version.yaml: {}
+    go_glide_sample.yaml: {}

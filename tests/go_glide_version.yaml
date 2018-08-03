@@ -1,0 +1,8 @@
+---
+
+command:
+    "glide --version":
+        exit-status: 0
+        timeout: 120000
+        stdout:
+            - /glide version v{{ .Vars.glide_version }}/

@@ -1,0 +1,8 @@
+---
+
+command:
+    "protoc --version":
+        exit-status: 0
+        timeout: 120000
+        stdout:
+            - /libprotoc {{ .Vars.libprotoc_version }}/

@@ -56,12 +56,11 @@ test-deployed:
 	@test "${CMD_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@test "${IMG_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@(docker stop ${NAME_CONTAINER} > /dev/null 2>&1 && docker rm ${NAME_CONTAINER} > /dev/null 2>&1) || true
-	@docker run -d -t --name ${NAME_CONTAINER} ${IMG_CONTAINER} /bin/bash > /dev/null
+	@docker run --rm -d -t --name ${NAME_CONTAINER} ${IMG_CONTAINER} /bin/bash > /dev/null
 	@docker cp tests/. ${NAME_CONTAINER}:/go
 	@docker cp bin/goss ${NAME_CONTAINER}:/usr/local/bin/goss
-	@docker exec -t -w /go ${NAME_CONTAINER} ${CMD_CONTAINER}
+	@docker exec -it -w /go ${NAME_CONTAINER} ${CMD_CONTAINER}
 	@docker stop ${NAME_CONTAINER} > /dev/null
-	@docker rm ${NAME_CONTAINER} > /dev/null
 
 test-golang: bin/goss
 	@make -s -C . test-deployed \
@@ -69,23 +68,23 @@ test-golang: bin/goss
 			IMG_CONTAINER="bearstech/golang-dev:9" \
 			CMD_CONTAINER="goss -g go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
 
-test-glide: bin/goss
-	@make -s -C . test-deployed \
-			NAME_CONTAINER="$@" \
-			IMG_CONTAINER="bearstech/golang-glide:9" \
-			CMD_CONTAINER="goss -g go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
-
 test-dep: bin/goss
 	@make -s -C . test-deployed \
 			NAME_CONTAINER="$@" \
 			IMG_CONTAINER="bearstech/golang-dep:9" \
-			CMD_CONTAINER="goss -g go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
+			CMD_CONTAINER="goss -g go-dep.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
+
+test-glide: bin/goss
+	@make -s -C . test-deployed \
+			NAME_CONTAINER="$@" \
+			IMG_CONTAINER="bearstech/golang-glide:9" \
+			CMD_CONTAINER="goss -g go-glide.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
 
 test-protobuild: bin/goss
 	@make -s -C . test-deployed \
 			NAME_CONTAINER="$@" \
 			IMG_CONTAINER="bearstech/golang-protobuild:9" \
-			CMD_CONTAINER="goss -g go-dev.yaml --vars vars/go_protobuild_node.yaml validate --max-concurrent 4 --format documentation"
+			CMD_CONTAINER="goss -g go-protobuild.yaml --vars vars/go_protobuild_node.yaml validate --max-concurrent 4 --format documentation"
 
 test-node: bin/goss
 	@make -s -C . test-deployed \
