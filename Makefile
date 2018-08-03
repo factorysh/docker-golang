@@ -59,7 +59,7 @@ test-deployed:
 	@docker run --rm -d -t --name ${NAME_CONTAINER} ${IMG_CONTAINER} /bin/bash > /dev/null
 	@docker cp tests/. ${NAME_CONTAINER}:/go
 	@docker cp bin/goss ${NAME_CONTAINER}:/usr/local/bin/goss
-	@docker exec -it -w /go ${NAME_CONTAINER} ${CMD_CONTAINER}
+	@docker exec -t -w /go ${NAME_CONTAINER} ${CMD_CONTAINER}
 	@docker stop ${NAME_CONTAINER} > /dev/null
 
 test-golang: bin/goss
