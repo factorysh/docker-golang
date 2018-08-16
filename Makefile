@@ -42,6 +42,18 @@ push:
 	docker push bearstech/golang-dep:latest
 	docker push bearstech/golang-node:latest
 
+remove_image:
+	docker rmi bearstech/golang-dev:stretch
+	docker rmi bearstech/golang-dev:9
+	docker rmi bearstech/golang-dev:latest
+	docker rmi bearstech/golang-glide:stretch
+	docker rmi bearstech/golang-glide:9
+	docker rmi bearstech/golang-glide:latest
+	docker rmi bearstech/golang-dep:stretch
+	docker rmi bearstech/golang-dep:9
+	docker rmi bearstech/golang-dep:latest
+	docker rmi bearstech/golang-node:latest
+
 bin/goss:
 	mkdir -p bin
 	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
