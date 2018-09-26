@@ -10,7 +10,7 @@ WORKDIR /opt
 RUN set -eux \
     &&  curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz \
     &&  useradd --home-dir /go --create-home --shell /bin/bash go \
-    &&  chmod 755 /go
+    &&  chmod 777 /go
 
 SHELL ["/bin/sh", "-c"]
 
