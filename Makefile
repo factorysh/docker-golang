@@ -105,4 +105,6 @@ test-node: bin/goss
 			IMG_CONTAINER="bearstech/golang-node:latest" \
 			CMD_CONTAINER="goss -g go-dev.yaml --vars vars/go_protobuild_node.yaml validate --max-concurrent 4 --format documentation"
 
+down:
+
 tests: test-golang test-glide test-dep test-protobuild test-node
