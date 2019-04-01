@@ -1,6 +1,6 @@
 FROM bearstech/debian-dev:stretch
 
-ENV GOLANG_VERSION=1.11
+ENV GOLANG_VERSION=1.12.1
 ENV PATH=/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV GOPATH=/go
 ENV GOROOT=/opt/go
