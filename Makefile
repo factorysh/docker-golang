@@ -94,6 +94,7 @@ test-glide: bin/goss
 			CMD_CONTAINER="goss -g go-glide.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
 
 test-protobuild: bin/goss
+	docker system prune -f
 	@make -s -C . test-deployed \
 			NAME_CONTAINER="$@" \
 			IMG_CONTAINER="bearstech/golang-protobuild:9" \
