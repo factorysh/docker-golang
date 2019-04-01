@@ -1,8 +1,8 @@
 FROM bearstech/golang-dev:latest
 
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+USER root
 RUN set -eux \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
@@ -17,7 +17,6 @@ RUN set -eux \
 SHELL ["/bin/sh", "-c"]
 
 USER go
-WORKDIR /go
 
 RUN set -eux \
     &&  go get -u google.golang.org/grpc \
