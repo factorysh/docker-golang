@@ -2,6 +2,8 @@ FROM bearstech/golang-dev:stretch
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+ENV PATH=/go/bin:/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 USER root
 RUN set -eux \
     &&  apt-get update \
