@@ -1,22 +1,28 @@
-FROM bearstech/node-dev:lts
+FROM bearstech/golang-dev:stretch
 
-ENV GOLANG_VERSION=1.12.1
 ENV PATH=/opt/go/bin:/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV GOPATH=/go
-ENV GOROOT=/opt/go
+
+ARG NODE_VERSION
+ARG NODE_MAJOR_VERSION
+
+LABEL com.bearstech.version.node=${NODE_VERSION}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+USER root
 RUN set -eux \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
-              git \
-              mercurial \
+              apt-transport-https \
+              ca-certificates \
+              curl \
+    &&  curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -a \
+    &&  echo "deb https://deb.nodesource.com/node_${NODE_MAJOR_VERSION}.x stretch main" | tee /etc/apt/sources.list.d/nodesource.list \
+    &&  echo "deb-src https://deb.nodesource.com/node_${NODE_MAJOR_VERSION}.x stretch main" | tee -a /etc/apt/sources.list.d/nodesource.list \
+    &&  apt-get update \
+    &&  apt-get install -y --no-install-recommends \
+              nodejs \
     &&  apt-get clean \
-    &&  rm -rf /var/lib/apt/lists/* \
-    &&  curl -qL https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xz \
-    &&  mv go /opt/go \
-    &&  useradd --home-dir /go --create-home --shell /bin/bash go \
-    &&  chmod 755 /go
+    &&  rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/sh", "-c"]
 
