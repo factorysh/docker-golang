@@ -67,17 +67,20 @@ NAME_CONTAINER := ""
 CMD_CONTAINER := ""
 IMG_CONTAINER := ""
 
-test-deployed:
+.cache:
+	mkdir -p .cache
+
+test-deployed: .cache
 	@test "${NAME_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@test "${CMD_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@test "${IMG_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
-	@(docker stop ${NAME_CONTAINER} > /dev/null 2>&1 && docker rm ${NAME_CONTAINER} > /dev/null 2>&1) || true
-	@docker run --rm -d -t --name ${NAME_CONTAINER} ${IMG_CONTAINER} /bin/bash > /dev/null
-	@docker cp bin/goss ${NAME_CONTAINER}:/usr/local/bin/goss
-	@docker cp tests_golang/. ${NAME_CONTAINER}:/go
-	@docker exec -t -u root ${NAME_CONTAINER} chown -R go:go /go
-	@docker exec -t -w /go ${NAME_CONTAINER} ${CMD_CONTAINER}
-	@docker stop ${NAME_CONTAINER} > /dev/null
+	docker run --rm -ti \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests_golang:/go \
+		-v `pwd`/.cache:/.cache \
+		-w /go \
+		-u `id -u` \
+		${IMG_CONTAINER} ${CMD_CONTAINER}
 
 test-golang: bin/goss
 	@make -s -C . test-deployed \
@@ -86,23 +89,28 @@ test-golang: bin/goss
 			CMD_CONTAINER="goss -g go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
 
 test-dep: bin/goss
-	@make -s -C . test-deployed \
+	rm -rf tests_golang/src/pkg_errors/Gopkg.lock tests_golang/src/pkg_errors/Gopkg.toml tests_golang/src/pkg_errors/_vendor-*
+	@make -C . test-deployed \
 			NAME_CONTAINER="$@" \
 			IMG_CONTAINER="bearstech/golang-dep:9" \
 			CMD_CONTAINER="goss -g go-dep.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
+	rm -rf tests_golang/src/pkg_errors/Gopkg.lock tests_golang/src/pkg_errors/Gopkg.toml tests_golang/src/pkg_errors/_vendor-*
 
 test-glide: bin/goss
+	rm -rf tests_golang/src/pkg_errors/glide.lock tests_golang/src/pkg_errors/glide.yaml tests_golang/src/pkg_errors/vendor/ tests_golang/.glide/
 	@make -s -C . test-deployed \
 			NAME_CONTAINER="$@" \
 			IMG_CONTAINER="bearstech/golang-glide:9" \
 			CMD_CONTAINER="goss -g go-glide.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
+	rm -rf tests_golang/src/pkg_errors/glide.lock tests_golang/src/pkg_errors/glide.yaml tests_golang/src/pkg_errors/vendor/ tests_golang/.glide/
 
 test-protobuild: bin/goss
-	docker system prune -f
+	rm -rf tests_golang/src/protoc_test/doc.pb.go
 	@make -s -C . test-deployed \
 			NAME_CONTAINER="$@" \
 			IMG_CONTAINER="bearstech/golang-protobuild:9" \
 			CMD_CONTAINER="goss -g go-protobuild.yaml --vars vars/go_protobuild_node.yaml validate --max-concurrent 4 --format documentation"
+	rm -rf tests_golang/src/protoc_test/doc.pb.go
 
 test-node: bin/goss
 	@make -s -C . test-deployed \
