@@ -74,7 +74,7 @@ test-deployed: .cache
 	@test "${NAME_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@test "${CMD_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	@test "${IMG_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
-	docker run --rm -ti \
+	docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests_golang:/go \
 		-v `pwd`/.cache:/.cache \
