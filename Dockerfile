@@ -17,6 +17,8 @@ SHELL ["/bin/sh", "-c"]
 USER go
 WORKDIR /go
 
+ARG GIT_VERSION
+LABEL com.bearstech.source.golang=https://github.com/factorysh/docker-golang/commit/${GIT_VERSION}
 # Use this image using :
 # - go build [YOUR_DIR]
 # - make ...
