@@ -19,6 +19,9 @@ WORKDIR /go
 
 ARG GIT_VERSION
 LABEL com.bearstech.source.golang=https://github.com/factorysh/docker-golang/commit/${GIT_VERSION}
+
+ARG GIT_DATE
+LABEL com.bearstech.date.golang=${GIT_DATE}
 # Use this image using :
 # - go build [YOUR_DIR]
 # - make ...
