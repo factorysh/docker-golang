@@ -4,7 +4,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV PATH=/go/bin:/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-USER root
 RUN set -eux \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
@@ -24,9 +23,6 @@ RUN set -eux \
     &&  go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
     &&  go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger \
     &&  go get -u github.com/stevvooe/protobuild \
-    &&  cp /go/bin/proto* /usr/local/bin \
-    &&  chown -R go:go /go
-
-USER go
+    &&  cp /go/bin/proto* /usr/local/bin
 
 CMD ["protoc", "--version"]

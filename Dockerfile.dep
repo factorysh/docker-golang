@@ -1,6 +1,6 @@
 FROM bearstech/golang-dev:stretch
 
-ENV DEP_VERSION=0.5.1
+ENV DEP_VERSION=0.5.3
 
 USER root
 
