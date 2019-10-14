@@ -1,7 +1,8 @@
+
+include Makefile.build_args
+
 GOSS_VERSION := 0.3.5
 NODE10_VERSION = $(shell curl -qs https://deb.nodesource.com/node_10.x/dists/stretch/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
-GIT_VERSION := $(shell git rev-parse HEAD)
-GIT_DATE := $(shell git show -s --format=%ci HEAD)
 
 all: pull build
 
@@ -11,50 +12,45 @@ pull:
 build: golang glide protobuild dep node
 
 golang:
-	docker build \
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/golang-dev:stretch \
-		--build-arg GIT_VERSION=${GIT_VERSION} \
-		--build-arg GIT_DATE="${GIT_DATE}" \
 		-f Dockerfile \
 		.
 	docker tag bearstech/golang-dev:stretch bearstech/golang-dev:9
 	docker tag bearstech/golang-dev:stretch bearstech/golang-dev:latest
 
 glide:
-	docker build \
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/golang-glide:stretch \
-		--build-arg GIT_VERSION=${GIT_VERSION} \
-		--build-arg GIT_DATE="${GIT_DATE}" \
 		-f Dockerfile.glide \
 		.
 	docker tag bearstech/golang-glide:stretch bearstech/golang-glide:9
 	docker tag bearstech/golang-glide:stretch bearstech/golang-glide:latest
 
 protobuild:
-	docker build \
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/golang-protobuild:stretch \
-		--build-arg GIT_VERSION=${GIT_VERSION} \
-		--build-arg GIT_DATE="${GIT_DATE}" \
 		-f Dockerfile.protobuild \
 		.
 	docker tag bearstech/golang-protobuild:stretch bearstech/golang-protobuild:9
 	docker tag bearstech/golang-protobuild:stretch bearstech/golang-protobuild:latest
 
 dep:
-	docker build \
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/golang-dep:stretch \
-		--build-arg GIT_VERSION=${GIT_VERSION} \
-		--build-arg GIT_DATE="${GIT_DATE}" \
 		-f Dockerfile.dep \
 		.
 	docker tag bearstech/golang-dep:stretch bearstech/golang-dep:9
 	docker tag bearstech/golang-dep:stretch bearstech/golang-dep:latest
 
 node:
-	docker build \
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/golang-node:latest \
-		--build-arg GIT_VERSION=${GIT_VERSION} \
-		--build-arg GIT_DATE="${GIT_DATE}" \
 		--build-arg NODE_VERSION=${NODE10_VERSION} \
 		--build-arg NODE_MAJOR_VERSION=10 \
 		-f Dockerfile.node \
@@ -147,4 +143,3 @@ test-node: bin/goss
 down:
 
 tests: test-golang test-glide test-dep test-protobuild test-node
-
