@@ -1,5 +1,5 @@
 ---
 
-go_version: "1.12.5"
+go_version: "1.13.6"
 dep_version: "0.5.3"
 glide_version: "0.13.2"
