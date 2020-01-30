@@ -3,6 +3,7 @@ FROM bearstech/golang-dev:stretch
 ENV DEP_VERSION=0.5.3
 
 RUN set -eux \
+    &&  export http_proxy=${HTTP_PROXY} \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
             openssh-client \
