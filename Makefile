@@ -2,7 +2,7 @@
 include Makefile.lint
 include Makefile.build_args
 
-GOSS_VERSION := 0.3.5
+GOSS_VERSION := 0.3.13
 NODE10_VERSION = $(shell curl -qs https://deb.nodesource.com/node_10.x/dists/stretch/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
 
 all: pull build
