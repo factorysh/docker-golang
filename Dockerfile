@@ -1,4 +1,4 @@
-FROM bearstech/debian-dev:stretch
+FROM bearstech/debian-dev:buster
 
 ENV GOLANG_VERSION=1.14.6
 ENV PATH=/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
