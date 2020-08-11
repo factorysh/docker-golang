@@ -2,8 +2,8 @@
 include Makefile.lint
 include Makefile.build_args
 
-GOSS_VERSION := 0.3.5
-NODE10_VERSION = $(shell curl -qs https://deb.nodesource.com/node_10.x/dists/stretch/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
+GOSS_VERSION := 0.3.13
+NODE_VERSION = $(shell curl -qs https://deb.nodesource.com/node_10.x/dists/stretch/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
 
 all: pull build
 
@@ -52,7 +52,7 @@ node:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/golang-node:latest \
-		--build-arg NODE_VERSION=${NODE10_VERSION} \
+		--build-arg NODE_VERSION=${NODE_VERSION} \
 		--build-arg NODE_MAJOR_VERSION=10 \
 		-f Dockerfile.node \
 		.
