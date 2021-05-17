@@ -1,4 +1,4 @@
-FROM bearstech/golang-dev:stretch
+FROM bearstech/golang-dev:buster
 
 ENV DEP_VERSION=0.5.3
 
