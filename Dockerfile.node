@@ -3,6 +3,7 @@ FROM bearstech/golang-dev:${DEBIAN_VERSION}
 
 ENV PATH=/opt/go/bin:/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+ARG DEBIAN_VERSION
 ARG NODE_VERSION
 ARG NODE_MAJOR_VERSION
 
@@ -19,7 +20,7 @@ RUN set -eux \
               curl \
               gpg \
     &&  curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor > /etc/apt/trusted.gpg.d/nodesource.gpg \
-    &&  echo "deb https://deb.nodesource.com/node_${NODE_MAJOR_VERSION}.x stretch main" | tee /etc/apt/sources.list.d/nodesource.list \
+    &&  echo "deb https://deb.nodesource.com/node_${NODE_MAJOR_VERSION}.x ${DEBIAN_VERSION} main" | tee /etc/apt/sources.list.d/nodesource.list \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
               nodejs \
