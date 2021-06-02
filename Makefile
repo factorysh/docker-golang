@@ -3,7 +3,8 @@ include Makefile.lint
 include Makefile.build_args
 
 GOSS_VERSION := 0.3.13
-NODE_VERSION = $(shell curl -qs https://deb.nodesource.com/node_16.x/dists/$(DEBIAN_VERSION)/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
+NODE_MAJOR_VERSION = 16
+NODE_VERSION = $(shell curl -qs https://deb.nodesource.com/node_$(NODE_MAJOR_VERSION).x/dists/$(DEBIAN_VERSION)/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
 DEBIAN_VERSION=bullseye
 
 all: pull build
@@ -27,6 +28,7 @@ golang:
 glide:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
+		--build-arg DEBIAN_VERSION="${DEBIAN_VERSION}" \
 		-t bearstech/golang-glide:$(DEBIAN_VERSION) \
 		-f Dockerfile.glide \
 		.
@@ -35,6 +37,7 @@ glide:
 protobuild:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
+		--build-arg DEBIAN_VERSION="${DEBIAN_VERSION}" \
 		-t bearstech/golang-protobuild:$(DEBIAN_VERSION) \
 		-f Dockerfile.protobuild \
 		.
@@ -43,6 +46,7 @@ protobuild:
 dep:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
+		--build-arg DEBIAN_VERSION="${DEBIAN_VERSION}" \
 		-t bearstech/golang-dep:$(DEBIAN_VERSION) \
 		-f Dockerfile.dep \
 		.
@@ -52,8 +56,9 @@ node:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/golang-node:latest \
+		--build-arg DEBIAN_VERSION="${DEBIAN_VERSION}" \
 		--build-arg NODE_VERSION=${NODE_VERSION} \
-		--build-arg NODE_MAJOR_VERSION=10 \
+		--build-arg NODE_MAJOR_VERSION=${NODE_MAJOR_VERSION} \
 		-f Dockerfile.node \
 		.
 
