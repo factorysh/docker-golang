@@ -1,4 +1,5 @@
-FROM bearstech/debian-dev:buster
+ARG DEBIAN_VERSION
+FROM bearstech/debian-dev:${DEBIAN_VERSION}
 
 ENV GOLANG_VERSION=1.14.6
 ENV PATH=/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

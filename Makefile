@@ -4,17 +4,21 @@ include Makefile.build_args
 
 GOSS_VERSION := 0.3.13
 NODE_VERSION = $(shell curl -qs https://deb.nodesource.com/node_10.x/dists/stretch/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
+DEBIAN_VERSION=bullseye
 
 all: pull build
 
 pull:
-	docker pull bearstech/debian-dev:stretch
+	docker pull bearstech/debian-dev:$(DEBIAN_VERSION)
 
-build: golang glide protobuild dep node
+# protobuild is broken
+#build: golang glide protobuild dep node
+build: golang glide dep node
 
 golang:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
+		--build-arg DEBIAN_VERSION="${DEBIAN_VERSION}" \
 		-t bearstech/golang-dev:stretch \
 		-f Dockerfile \
 		.
@@ -143,4 +147,4 @@ test-node: bin/goss
 
 down:
 
-tests: test-golang test-glide test-dep test-protobuild test-node
+tests: test-golang test-glide test-dep test-node
