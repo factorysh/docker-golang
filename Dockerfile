@@ -1,7 +1,7 @@
 ARG DEBIAN_VERSION
 FROM bearstech/debian-dev:${DEBIAN_VERSION}
 
-ENV GOLANG_VERSION=1.14.6
+ENV GOLANG_VERSION=1.17.3
 ENV PATH=/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV GOPATH=/go
 ENV GOROOT=/opt/go
