@@ -2,7 +2,7 @@
 include Makefile.lint
 include Makefile.build_args
 
-GOSS_VERSION := 0.3.13
+GOSS_VERSION := 0.3.16
 NODE_MAJOR_VERSION = 16
 NODE_VERSION = $(shell curl -qs https://deb.nodesource.com/node_$(NODE_MAJOR_VERSION).x/dists/$(DEBIAN_VERSION)/main/binary-amd64/Packages | grep -m 1 Version: | cut -d " " -f 2 -)
 DEBIAN_VERSION=bullseye

@@ -2,3 +2,5 @@ bin/
 .cache
 tests_golang/pkg/
 tests_golang/src/pkg_errors/vendor/
+go.mod
+go.sum

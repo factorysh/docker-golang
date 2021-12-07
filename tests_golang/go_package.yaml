@@ -1,7 +1,7 @@
 ---
 
 command:
-    "go run src/hello/main.go":
+    "./run.sh":
         exit-status: 0
         timeout: 120000
         stdout:
