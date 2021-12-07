@@ -1,6 +1,0 @@
----
-
-gossfile:
-    go-dev.yaml: {}
-    go_protoc_version.yaml: {}
-    go_protoc_sample.yaml: {}

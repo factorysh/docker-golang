@@ -13,8 +13,7 @@ pull:
 	docker pull bearstech/debian-dev:$(DEBIAN_VERSION)
 
 # protobuild is broken
-#build: golang glide protobuild dep node
-build: golang glide dep node
+build: golang node
 
 golang:
 	 docker build \
@@ -25,15 +24,6 @@ golang:
 		.
 	docker tag bearstech/golang-dev:$(DEBIAN_VERSION) bearstech/golang-dev:latest
 
-glide:
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		--build-arg DEBIAN_VERSION="${DEBIAN_VERSION}" \
-		-t bearstech/golang-glide:$(DEBIAN_VERSION) \
-		-f Dockerfile.glide \
-		.
-	docker tag bearstech/golang-glide:$(DEBIAN_VERSION) bearstech/golang-glide:latest
-
 protobuild:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
@@ -42,15 +32,6 @@ protobuild:
 		-f Dockerfile.protobuild \
 		.
 	docker tag bearstech/golang-protobuild:$(DEBIAN_VERSION) bearstech/golang-protobuild:latest
-
-dep:
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		--build-arg DEBIAN_VERSION="${DEBIAN_VERSION}" \
-		-t bearstech/golang-dep:$(DEBIAN_VERSION) \
-		-f Dockerfile.dep \
-		.
-	docker tag bearstech/golang-dep:$(DEBIAN_VERSION) bearstech/golang-dep:latest
 
 node:
 	 docker build \
@@ -65,19 +46,11 @@ node:
 push:
 	docker push bearstech/golang-dev:$(DEBIAN_VERSION)
 	docker push bearstech/golang-dev:latest
-	docker push bearstech/golang-glide:$(DEBIAN_VERSION)
-	docker push bearstech/golang-glide:latest
-	docker push bearstech/golang-dep:$(DEBIAN_VERSION)
-	docker push bearstech/golang-dep:latest
 	docker push bearstech/golang-node:latest
 
 remove_image:
 	docker rmi bearstech/golang-dev:$(DEBIAN_VERSION)
 	docker rmi bearstech/golang-dev:latest
-	docker rmi bearstech/golang-glide:$(DEBIAN_VERSION)
-	docker rmi bearstech/golang-glide:latest
-	docker rmi bearstech/golang-dep:$(DEBIAN_VERSION)
-	docker rmi bearstech/golang-dep:latest
 	docker rmi bearstech/golang-node:latest
 
 bin/goss:
@@ -110,22 +83,6 @@ test-golang: bin/goss
 			IMG_CONTAINER="bearstech/golang-dev:$(DEBIAN_VERSION)" \
 			CMD_CONTAINER="goss -g go-dev.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
 
-test-dep: bin/goss
-	rm -rf tests_golang/src/pkg_errors/Gopkg.lock tests_golang/src/pkg_errors/Gopkg.toml tests_golang/src/pkg_errors/_vendor-*
-	@make -C . test-deployed \
-			NAME_CONTAINER="$@" \
-			IMG_CONTAINER="bearstech/golang-dep:$(DEBIAN_VERSION)" \
-			CMD_CONTAINER="goss -g go-dep.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
-	rm -rf tests_golang/src/pkg_errors/Gopkg.lock tests_golang/src/pkg_errors/Gopkg.toml tests_golang/src/pkg_errors/_vendor-*
-
-test-glide: bin/goss
-	rm -rf tests_golang/src/pkg_errors/glide.lock tests_golang/src/pkg_errors/glide.yaml tests_golang/src/pkg_errors/vendor/ tests_golang/.glide/
-	@make -s -C . test-deployed \
-			NAME_CONTAINER="$@" \
-			IMG_CONTAINER="bearstech/golang-glide:$(DEBIAN_VERSION)" \
-			CMD_CONTAINER="goss -g go-glide.yaml --vars vars/go_standard.yaml validate --max-concurrent 4 --format documentation"
-	rm -rf tests_golang/src/pkg_errors/glide.lock tests_golang/src/pkg_errors/glide.yaml tests_golang/src/pkg_errors/vendor/ tests_golang/.glide/
-
 test-protobuild: bin/goss
 	rm -rf tests_golang/src/protoc_test/doc.pb.go
 	@make -s -C . test-deployed \
@@ -142,4 +99,4 @@ test-node: bin/goss
 
 down:
 
-tests: test-golang test-glide test-dep test-node
+tests: test-golang test-node

@@ -1,6 +1,0 @@
----
-
-gossfile:
-    go-dev.yaml: {}
-    go_dep_version.yaml: {}
-    go_dep_sample.yaml: {}

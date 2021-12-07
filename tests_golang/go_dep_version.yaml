@@ -1,8 +1,0 @@
----
-
-command:
-    "dep version":
-        exit-status: 0
-        timeout: 120000
-        stdout:
-            - /.*{{ .Vars.dep_version }}.*/
