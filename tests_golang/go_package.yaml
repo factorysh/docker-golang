@@ -1,7 +1,7 @@
 ---
 
 command:
-    "cd src && go mod init example.com/example || true && go mod tidy || true && go run hello/main.go":
+    "./run.sh":
         exit-status: 0
         timeout: 120000
         stdout:
