@@ -98,9 +98,9 @@ test-deployed: .cache
 	@test "${IMG_CONTAINER}" || (echo "you cannot call this rule..." && exit 1)
 	docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests_golang:/go \
+		-v `pwd`/tests_golang:/go/app \
 		-v `pwd`/.cache:/.cache \
-		-w /go \
+		-w /go/app \
 		-u `id -u` \
 		${IMG_CONTAINER} ${CMD_CONTAINER}
 
