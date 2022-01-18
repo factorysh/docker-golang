@@ -1,4 +1,4 @@
 ---
 
-go_version: "1.17.5"
+go_version: "1.17.6"
 libprotoc_version: "3.6.1"
