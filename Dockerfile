@@ -29,6 +29,9 @@ ARG GIT_DATE
 ARG BUILD_DATE
 
 LABEL \
+    com.bearstech.image.language.golang.version=1.17.6 \
+    com.bearstech.image.language.golang.revision=${GIT_VERSION} \
+    com.bearstech.image.language.golang.created=${GIT_DATE} \
     com.bearstech.image.revision_date=${GIT_DATE} \
     org.opencontainers.image.authors=Bearstech \
     org.opencontainers.image.revision=${GIT_VERSION} \
